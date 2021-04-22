@@ -13,5 +13,9 @@ public class NoForceBuilder extends Builder<ForceLaws> {
 	ForceLaws createTheInstance(JSONObject data) {
 		return new NoForce();
 	}
+	
+	protected JSONObject createData() {
+		return new JSONObject();
+	}
 
 }

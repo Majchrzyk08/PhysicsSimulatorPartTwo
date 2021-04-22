@@ -10,7 +10,7 @@ public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
 
 	
 	public MovingTowardsFixedPointBuilder() {
-		super("mtfp", "Moving towars fixed point");
+		super("mtfp", "Moving towards a fixed point");
 	}
 	
 	ForceLaws createTheInstance(JSONObject data) {
@@ -25,6 +25,13 @@ public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
 			g = data.getDouble("g");
 		}
 		return new MovingTowardsFixedPoint(c, g);
+	}
+	
+	protected JSONObject createData() {
+		JSONObject x = new JSONObject();
+		x.put("c", "the point towards which bodies move (a json list of 2 numbers, e.g., [100.0,50.0])");
+		x.put("g", "the length of the acceleration vector (a number)");
+		return x;
 	}
 	
 

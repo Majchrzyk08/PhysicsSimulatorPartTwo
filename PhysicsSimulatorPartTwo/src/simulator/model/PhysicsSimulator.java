@@ -6,12 +6,13 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class PhysicsSimulator {
+public class PhysicsSimulator implements Observable<SimulatorObserver> {
 	
 	private List<Body> bs = new ArrayList<Body>();
 	double time;
 	ForceLaws forceLaw;
 	double currentTime = 0.0;
+	private List<SimulatorObserver> so = new ArrayList<SimulatorObserver>();
 	
 	public PhysicsSimulator(double time, ForceLaws forceLaw) {
 		if(time <= 0) {
@@ -36,6 +37,10 @@ public class PhysicsSimulator {
 		}
 		currentTime += time;
 		
+		for(SimulatorObserver x : so) {
+			x.onAdvance(bs, currentTime);
+		}
+		
 	}
 	
 	public void addBody(Body b) {
@@ -50,6 +55,9 @@ public class PhysicsSimulator {
 		
 		bs.add(b);
 		
+		for(SimulatorObserver x : so) {
+			x.onBodyAdded(bs, b);
+		}
 	}
 	
 	public JSONObject getState() {
@@ -70,8 +78,44 @@ public class PhysicsSimulator {
 
 	}
 	
+	public void reset() {
+		bs.clear();
+		currentTime = 0.0;
+		for(SimulatorObserver x : so) {
+			x.onReset(bs, currentTime, time, forceLaw.toString());
+		}
+	}
+	
+	public void setDeltaTime(double dt) {
+		if(dt <= 0) {
+			throw new IllegalArgumentException("The value of time is non-positive");
+		} 
+		this.time = dt;
+		for(SimulatorObserver x : so) {
+			x.onDeltaTimeChanged(time);
+		}
+	}
+	
+	public void setForceLaws(ForceLaws forceLaws) {
+		if(forceLaws == null) {
+			throw new IllegalArgumentException("The value of force law is not valid");
+		}
+		this.forceLaw = forceLaws;
+		for(SimulatorObserver x : so) {
+			x.onForceLawsChanged(forceLaw.toString());
+		}
+	}
+	
 	public String toString() {
 		return getState().toString();
+	}
+	
+	public void addObserver(SimulatorObserver o) {
+		if(!so.contains(o)) {
+			so.add(o);		
+			}
+		o.onRegister(bs, currentTime, time, forceLaw.toString());
+		
 	}
 	
 	

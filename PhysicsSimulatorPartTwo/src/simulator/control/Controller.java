@@ -7,19 +7,24 @@ import java.io.PrintStream;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import java.util.List;
 
 import simulator.factories.Factory;
 import simulator.model.Body;
+import simulator.model.ForceLaws;
 import simulator.model.PhysicsSimulator;
+import simulator.model.SimulatorObserver;
 
 public class Controller {
 	
 	PhysicsSimulator p;
 	Factory<Body> f;
+	Factory<ForceLaws> fl;
 	
-	public Controller(PhysicsSimulator p, Factory<Body> f) {
+	public Controller(PhysicsSimulator p, Factory<Body> f, Factory<ForceLaws> fl) {
 		this.p = p;
 		this.f = f;
+		this.fl = fl;
 	}
 	
 	public void loadBodies(InputStream in) {
@@ -30,6 +35,12 @@ public class Controller {
 		}
 		
 	}
+	
+public void run(int n) {
+	for(int i=0; i<n; i++) {
+		p.advance();
+	}
+}
 
 	
 public void run(int n, OutputStream out, InputStream expOut, StateComparator cmp) throws ResultNotEqualToExpectedException {
@@ -60,11 +71,27 @@ public void run(int n, OutputStream out, InputStream expOut, StateComparator cmp
 		}
 		s.println("]");
 		s.println("}");
-		
-		
-		
-		
-		
 	}
+
+public void reset() {
+	p.reset();
+}
+
+public void setDeltaTime(Double dt) {
+	p.setDeltaTime(dt);
+}
+
+public void addObserver(SimulatorObserver o) {
+	p.addObserver(o);
+}
+
+public List<JSONObject> getForceLawsInfo(){
+	return fl.getInfo();
+}
+
+public void setForcesLaws(JSONObject info) {
+	ForceLaws x = fl.createInstance(info);
+	p.setForceLaws(x);
+}
 	
 }

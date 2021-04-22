@@ -14,10 +14,6 @@ public class NewtonUniversalGravitation implements ForceLaws {
 	@Override
 	
 	public void apply(List<Body> bs) {
-//		 for (int i = 0; i < bs.size(); i++) {
-//			 for(int j = 0; j < bs.size(); j++){ 					
-//	            if(i != j) 	
-//					bs.get(i).addForce(getForce(bs.get(i), bs.get(j)));
 					for (Body b: bs) {
 						 for(Body bo: bs){
 							 if(b != bo)
@@ -47,6 +43,11 @@ public class NewtonUniversalGravitation implements ForceLaws {
 		
 		return objForce;
 	}
+	
+	public String toString() {
+		return "Newton’s Universal Gravitation with G="+g;
+	}
+	
 
 }
 	
