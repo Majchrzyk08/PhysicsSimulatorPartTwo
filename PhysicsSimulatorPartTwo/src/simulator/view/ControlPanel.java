@@ -1,15 +1,20 @@
 package simulator.view;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.SwingUtilities;
 
 import simulator.control.Controller;
 import simulator.model.Body;
 import simulator.model.SimulatorObserver;
 
-public class ControlPanel extends JPanel implements SimulatorObserver {
+public class ControlPanel extends JPanel implements SimulatorObserver, ActionListener {
 
 	// ...
 	private Controller _ctrl;
@@ -23,6 +28,33 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	}
 	
 	private void initGUI() {
+	JButton open = new JButton();
+	JButton force = new JButton();
+	JButton run = new JButton();
+	JButton stop = new JButton();
+	JButton exit = new JButton();
+	JPanel panel = new JPanel();
+	JSpinner spinner = new JSpinner();
+	
+	open.addActionListener(this);
+	force.addActionListener(this);
+	run.addActionListener(this);
+	stop.addActionListener(this);
+	exit.addActionListener(this);
+	
+	open.setIcon(new ImageIcon("resources/icons/open.png"));
+	force.setIcon(new ImageIcon("resources/icons/physics.png"));
+	run.setIcon(new ImageIcon("resources/icons/run.png"));
+	stop.setIcon(new ImageIcon("resources/icons/stop.png"));
+	exit.setIcon(new ImageIcon("resources/icons/exit.png"));
+	
+	panel.add(open);
+	panel.add(force);
+	panel.add(run);
+	panel.add(stop);
+	panel.add(exit);
+	
+	
 	// TODO build the tool bar by adding buttons, etc.
 	}
 	
@@ -86,6 +118,12 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	public void onForceLawsChanged(String fLawsDesc) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

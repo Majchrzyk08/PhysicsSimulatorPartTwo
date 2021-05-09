@@ -136,9 +136,14 @@ public class Main {
 		
 		cmdLineOptions.addOption(Option.builder("s").longOpt("steps").hasArg().desc("An integer representing the number of simulation steps. Default value: 150.").build());
 		
-		// DONE??? add support for -o, -eo, and -s (add corresponding information to
+		// add support for -o, -eo, and -s (add corresponding information to
 		// cmdLineOptions)
-
+		
+		//m 
+		cmdLineOptions.addOption(Option.builder("m").longOpt("mode").hasArg().desc(" Execution Mode. Possible values: ’batch’\n"
+				+ "(Batch mode), ’gui’ (Graphical User\n"
+				+ "Interface mode). Default value: ’batch’.").build());
+		
 		// delta-time
 		cmdLineOptions.addOption(Option.builder("dt").longOpt("delta-time").hasArg()
 				.desc("A double representing actual time, in seconds, per simulation step. Default value: "
@@ -295,7 +300,7 @@ public class Main {
 			os = new FileOutputStream(new File(_outFile));
 		}
 		
-		Controller cont = new Controller(ps, _bodyFactory);
+		Controller cont = new Controller(ps, _bodyFactory, _forceLawsFactory);
 		cont.loadBodies(is);
 		
 		if(_expectedOutFile == null) {
