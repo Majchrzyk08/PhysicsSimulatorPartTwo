@@ -23,22 +23,29 @@ public int getRowCount() {
 }
 @Override
 public int getColumnCount() {
+	int num = 0;
+	
+	return num;
 	// TODO complete
 }
 @Override
 public String getColumnName(int column) {
+	String name = null;
+	
+	return name;
 // TODO complete
 }
 
 @Override
 public Object getValueAt(int rowIndex, int columnIndex) {
+	return columnIndex;
 // TODO complete
 }
 // SimulatorObserver methods
 // ...
 @Override
 public void onRegister(List<Body> bodies, double time, double dt, String fLawsDesc) {
-	// TODO Auto-generated method stub
+
 	
 }
 @Override
