@@ -2,31 +2,44 @@ package simulator.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import simulator.control.Controller;
 import simulator.model.Body;
 import simulator.model.SimulatorObserver;
 
+
 public class ControlPanel extends JPanel implements SimulatorObserver, ActionListener {
 
 	// ...
 	private Controller _ctrl;
 	private boolean _stopped;
-	JButton open = new JButton();
-	JButton force = new JButton();
-	JButton run = new JButton();
-	JButton stop = new JButton();
-	JButton exit = new JButton();
-	JPanel panel = new JPanel();
-	JSpinner spinner = new JSpinner();
-
+	
+	private JLabel step;
+	private JLabel deltaT;
+	private JButton open;
+	private JButton force;
+	private JButton run;
+	private JButton stop;
+	private JButton exit;
+	private JPanel panel;
+	private JSpinner stepText;
+	private JTextField time;
+	
 	ControlPanel(Controller ctrl) {
 	_ctrl = ctrl;
 	_stopped = true;
@@ -35,12 +48,19 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 	}
 	
 	private void initGUI() {
+		
+	panel = new JPanel();	
+	open = new JButton();
+	force = new JButton();
+	run = new JButton();
+	stop = new JButton();
+	exit = new JButton();
+	stepText = new JSpinner();
+	time = new JTextField("2500");
+	step = new JLabel("Steps: ");
+	deltaT = new JLabel("Delta-time: ");
 	
-	open.addActionListener(this);
-	force.addActionListener(this);
-	run.addActionListener(this);
-	stop.addActionListener(this);
-	exit.addActionListener(this);
+	stepText.setValue(5000);
 	
 	open.setIcon(new ImageIcon("resources/icons/open.png"));
 	force.setIcon(new ImageIcon("resources/icons/physics.png"));
@@ -52,12 +72,86 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 	panel.add(force);
 	panel.add(run);
 	panel.add(stop);
+	panel.add(step);
+	panel.add(stepText);
+	panel.add(deltaT);
+	panel.add(time);
 	panel.add(exit);
 	
+	open.addActionListener(new ActionListener(){
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			File file;
+			JFileChooser fc = new JFileChooser();
+			int value = fc.showOpenDialog(open);
+			
+			if(value == JFileChooser.APPROVE_OPTION) {
+				file = fc.getSelectedFile();
+				System.out.println("Loading: " + file.getName());
+				} 
+			else {
+				 file = null;
+				}
+			
+			if(file != null) {
+				_ctrl.reset();
+				InputStream iFile;
+				try {
+					iFile = new FileInputStream(file);
+					_ctrl.loadBodies(iFile);
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+	});
 	
-	// TODO build the tool bar by adding buttons, etc.
-	}
+	force.addActionListener(new ActionListener(){
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+	});
 	
+	run.addActionListener(new ActionListener(){
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			open.setEnabled(false);
+			force.setEnabled(false);
+			exit.setEnabled(false);
+			
+			_stopped = false;
+			
+			run_sim((Integer)stepText.getValue());
+
+		}
+	});
+	
+	stop.addActionListener(new ActionListener(){
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			_stopped = true;
+			
+		}
+	});
+	
+	exit.addActionListener(new ActionListener(){	
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			int input = JOptionPane.showConfirmDialog(null, "Do you want to exit?", "Select and option...", JOptionPane.YES_NO_OPTION);
+			
+			System.out.println(input);
+			
+			if(input == 0) {
+				System.exit(0);
+			}
+			
+		}
+	});
+
+}
 	// other private/protected methods
 	// ...
 	
@@ -67,7 +161,14 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 		_ctrl.run(1);
 		} catch (Exception e) {
 		// TODO show the error in a dialog box
+			
+		//JOptionPane.showMessageDialog(null, message, title, messageType);
+		
 		// TODO enable all buttons
+		open.setEnabled(true);
+		force.setEnabled(true);
+		exit.setEnabled(true);
+		
 		_stopped = true;
 		return;
 		}
@@ -80,6 +181,9 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 		} else {
 		_stopped = true;
 		// TODO enable all buttons
+		open.setEnabled(true);
+		force.setEnabled(true);
+		exit.setEnabled(true);
 		}
 		}
 	

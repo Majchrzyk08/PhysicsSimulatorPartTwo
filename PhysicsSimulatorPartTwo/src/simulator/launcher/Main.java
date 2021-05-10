@@ -6,7 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+
+import javax.swing.SwingUtilities;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -18,6 +21,7 @@ import org.apache.commons.cli.ParseException;
 import org.json.JSONObject;
 
 import simulator.control.Controller;
+import simulator.control.ResultNotEqualToExpectedException;
 import simulator.control.StateComparator;
 import simulator.factories.BasicBodyBuilder;
 import simulator.factories.Builder;
@@ -44,6 +48,7 @@ public class Main {
 	
 	// some attributes to stores values corresponding to command-line parameters
 	//
+	private static String _mode = null;
 	private static Double _dtime = null;
 	private static Integer _steps = null;
 	private static String _inFile = null;
@@ -97,7 +102,8 @@ public class Main {
 			parseOutFileOption(line);
 			parseExpectedOutputOption(line);
 			parseStepsOption(line);
-			// DONE??? add support of -o, -eo, and -s (define corresponding parse methods)
+			parseModeOption(line);
+			// add support of -o, -eo, and -s (define corresponding parse methods)
 			parseDeltaTimeOption(line);
 			parseForceLawsOption(line);
 			parseStateComparatorOption(line);
@@ -183,7 +189,9 @@ public class Main {
 		s = s + ". You can provide the 'data' json attaching :{...} to the tag, but without spaces.";
 		return s;
 	}
-
+	private static void parseModeOption(CommandLine line) {
+		_mode = line.getOptionValue("m");
+	}
 	private static void parseHelpOption(CommandLine line, Options cmdLineOptions) {
 		if (line.hasOption("h")) {
 			HelpFormatter formatter = new HelpFormatter();
@@ -314,7 +322,42 @@ public class Main {
 
 	private static void start(String[] args) throws Exception {
 		parseArgs(args);
+		if(_mode.equals("batch"))
 		startBatchMode();
+		else if(_mode.equals("gui"))
+		startGui();
+	}
+
+	private static void startGui() throws FileNotFoundException, ResultNotEqualToExpectedException, InvocationTargetException, InterruptedException {
+		PhysicsSimulator ps = new PhysicsSimulator(_dtime, _forceLawsFactory.createInstance(_forceLawsInfo) );
+		InputStream is = new FileInputStream(new File(_inFile));
+		InputStream eos;
+		OutputStream os;
+		StateComparator sc = _stateComparatorFactory.createInstance(_stateComparatorInfo);
+
+		if (_outFile == null) {
+			os = System.out;
+		}
+		else {
+			os = new FileOutputStream(new File(_outFile));
+		}
+		
+		Controller cont = new Controller(ps, _bodyFactory, _forceLawsFactory);
+		cont.loadBodies(is);
+		
+		if(_expectedOutFile == null) {
+			eos = null;
+		} else {
+			eos = new FileInputStream(_expectedOutFile);
+		}
+		cont.run(_steps, os, eos, sc);
+		SwingUtilities.invokeAndWait(new Runnable() {
+			@Override
+			public void run() {
+			//new MainWindow(cont);
+			}
+			});
+		
 	}
 
 	public static void main(String[] args) {
