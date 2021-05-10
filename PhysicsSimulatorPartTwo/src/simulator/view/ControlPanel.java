@@ -19,7 +19,14 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 	// ...
 	private Controller _ctrl;
 	private boolean _stopped;
-	
+	JButton open = new JButton();
+	JButton force = new JButton();
+	JButton run = new JButton();
+	JButton stop = new JButton();
+	JButton exit = new JButton();
+	JPanel panel = new JPanel();
+	JSpinner spinner = new JSpinner();
+
 	ControlPanel(Controller ctrl) {
 	_ctrl = ctrl;
 	_stopped = true;
@@ -28,13 +35,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 	}
 	
 	private void initGUI() {
-	JButton open = new JButton();
-	JButton force = new JButton();
-	JButton run = new JButton();
-	JButton stop = new JButton();
-	JButton exit = new JButton();
-	JPanel panel = new JPanel();
-	JSpinner spinner = new JSpinner();
 	
 	open.addActionListener(this);
 	force.addActionListener(this);
