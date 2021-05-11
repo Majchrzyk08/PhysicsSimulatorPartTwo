@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 import simulator.control.Controller;
 import simulator.misc.Vector2D;
@@ -125,7 +126,9 @@ public class Viewer extends JComponent implements SimulatorObserver {
 	// calculate the center
 	_centerX = getWidth() / 2;
 	_centerY = getHeight() / 2;
-	// TODO draw a cross at center
+//	// TODO draw a cross at center classmates ave told me that
+//	you need to make 2 JPanel, change the color of the background
+//	and set the size to a rectangle, one vertical and two horizontal
 	// TODO draw bodies (with vectors if _showVectors is true)
 	// TODO draw help if _showHelp is true
 	}

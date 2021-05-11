@@ -36,6 +36,7 @@ import simulator.factories.NoForceBuilder;
 import simulator.model.Body;
 import simulator.model.ForceLaws;
 import simulator.model.PhysicsSimulator;
+import simulator.view.MainWindow;
 
 public class Main {
 
@@ -325,15 +326,15 @@ public class Main {
 		if(_mode.equals("batch"))
 		startBatchMode();
 		else if(_mode.equals("gui"))
-		startGui();
+		startGUIMode();
 	}
 
-	private static void startGui() throws FileNotFoundException, ResultNotEqualToExpectedException, InvocationTargetException, InterruptedException {
+	private static void startGUIMode() throws FileNotFoundException, ResultNotEqualToExpectedException, InvocationTargetException, InterruptedException {
 		
 		SwingUtilities.invokeAndWait(new Runnable() {
 			@Override
 			public void run() {
-			//new MainWindow(cont);
+			new MainWindow();
 			}
 			});
 		
