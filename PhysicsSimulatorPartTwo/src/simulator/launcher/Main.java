@@ -329,28 +329,7 @@ public class Main {
 	}
 
 	private static void startGui() throws FileNotFoundException, ResultNotEqualToExpectedException, InvocationTargetException, InterruptedException {
-		PhysicsSimulator ps = new PhysicsSimulator(_dtime, _forceLawsFactory.createInstance(_forceLawsInfo) );
-		InputStream is = new FileInputStream(new File(_inFile));
-		InputStream eos;
-		OutputStream os;
-		StateComparator sc = _stateComparatorFactory.createInstance(_stateComparatorInfo);
-
-		if (_outFile == null) {
-			os = System.out;
-		}
-		else {
-			os = new FileOutputStream(new File(_outFile));
-		}
 		
-		Controller cont = new Controller(ps, _bodyFactory, _forceLawsFactory);
-		cont.loadBodies(is);
-		
-		if(_expectedOutFile == null) {
-			eos = null;
-		} else {
-			eos = new FileInputStream(_expectedOutFile);
-		}
-		cont.run(_steps, os, eos, sc);
 		SwingUtilities.invokeAndWait(new Runnable() {
 			@Override
 			public void run() {

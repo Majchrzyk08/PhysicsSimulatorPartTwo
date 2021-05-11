@@ -1,5 +1,6 @@
 package simulator.view;
 
+import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -162,7 +163,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 		} catch (Exception e) {
 		// TODO show the error in a dialog box
 			
-		//JOptionPane.showMessageDialog(null, message, title, messageType);
+		JOptionPane.showMessageDialog(null, e.getMessage(), "error", Dialog.ERROR);
 		
 		// TODO enable all buttons
 		open.setEnabled(true);
@@ -190,13 +191,13 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 	
 	@Override
 	public void onRegister(List<Body> bodies, double time, double dt, String fLawsDesc) {
-		// TODO Auto-generated method stub
+		this.time.setText(String.valueOf(dt));
 
 	}
 
 	@Override
 	public void onReset(List<Body> bodies, double time, double dt, String fLawsDesc) {
-		// TODO Auto-generated method stub
+		this.time.setText(String.valueOf(dt));
 
 	}
 
@@ -214,7 +215,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 
 	@Override
 	public void onDeltaTimeChanged(double dt) {
-		// TODO Auto-generated method stub
+		this.time.setText(String.valueOf(dt));
 
 	}
 
