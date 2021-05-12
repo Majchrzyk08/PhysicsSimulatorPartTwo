@@ -16,52 +16,65 @@ public class StatusBar extends JPanel implements SimulatorObserver {
 	private JLabel _currTime; // for current time
 	private JLabel _currLaws; // for force laws
 	private JLabel _numOfBodies; // for number of bodies
+	
+	JPanel timePanel = new JPanel();
+	JPanel numOfBodiesPanel = new JPanel();
+	JPanel lawsPanel = new JPanel();
+	
 	StatusBar(Controller ctrl) {
 	initGUI();
 	ctrl.addObserver(this);
 	}
 	
-	
 	private void initGUI() {
 	this.setLayout( new FlowLayout( FlowLayout.LEFT ));
 	this.setBorder( BorderFactory.createBevelBorder( 1 ));
-	// TODO complete the code to build the tool bar
+	
+	update();
+	
 	}
 	
 	public void update() {
 		
+		timePanel.add(_currTime);
+		this.add(timePanel);
+		
+		numOfBodiesPanel.add(numOfBodiesPanel);
+		this.add(numOfBodiesPanel);
+		
+		lawsPanel.add(_currLaws);
+		this.add(lawsPanel);
+		
 	}
 	
-	
-	// other private/protected methods
-	// ...
-	// SimulatorObserver methods
-	// ...
 
 
 	@Override
 	public void onRegister(List<Body> bodies, double time, double dt, String fLawsDesc) {
 		_currTime.setText("Time: " + Double.toString(time));
-		
+		_currLaws.setText("Force Laws: " + fLawsDesc);
+		_numOfBodies.setText("Number of bodies: "+ Integer.toString(bodies.size()));
 		update();
 	}
 
 	@Override
 	public void onReset(List<Body> bodies, double time, double dt, String fLawsDesc) {
-		// TODO Auto-generated method stub
-
+		_currTime.setText("Time: " + Double.toString(time));
+		_currLaws.setText("Force Laws: " + fLawsDesc);
+		_numOfBodies.setText("Number of bodies: "+ Integer.toString(bodies.size()));
+		update();
 	}
 
 	@Override
 	public void onBodyAdded(List<Body> bodies, Body b) {
-		// TODO Auto-generated method stub
-
+		_numOfBodies.setText("Number of bodies: "+ Integer.toString(bodies.size()));
+		update();
 	}
 
 	@Override
 	public void onAdvance(List<Body> bodies, double time) {
-		// TODO Auto-generated method stub
-
+		_currTime.setText("Time: " + Double.toString(time));
+		update();
 	}
 
 	@Override
@@ -72,8 +85,8 @@ public class StatusBar extends JPanel implements SimulatorObserver {
 
 	@Override
 	public void onForceLawsChanged(String fLawsDesc) {
-		
-
+		_currLaws.setText("Force Laws: " + fLawsDesc);
+		update();
 	}
 
 }
