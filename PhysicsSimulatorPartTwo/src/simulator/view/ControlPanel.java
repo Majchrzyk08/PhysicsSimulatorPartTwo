@@ -60,7 +60,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 	time = new JTextField("2500");
 	step = new JLabel("Steps: ");
 	deltaT = new JLabel("Delta-time: ");
-	
+	                        
 	stepText.setValue(5000);
 	
 	open.setIcon(new ImageIcon("resources/icons/open.png"));

@@ -330,11 +330,19 @@ public class Main {
 	}
 
 	private static void startGUIMode() throws FileNotFoundException, ResultNotEqualToExpectedException, InvocationTargetException, InterruptedException {
+		PhysicsSimulator ps = new PhysicsSimulator(_dtime, _forceLawsFactory.createInstance(_forceLawsInfo) );
+		InputStream is;
+
+		Controller cont = new Controller(ps, _bodyFactory, _forceLawsFactory);
+		if(_inFile != null) {
+			is = new FileInputStream(new File(_inFile));
+			cont.loadBodies(is);
+		}
 		
 		SwingUtilities.invokeAndWait(new Runnable() {
 			@Override
 			public void run() {
-			new MainWindow();
+			new MainWindow(cont);
 			}
 			});
 		
