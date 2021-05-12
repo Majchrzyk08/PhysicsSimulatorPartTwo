@@ -31,14 +31,16 @@ private void initGUI() {
 	BoxLayout boxLayout = new BoxLayout(boxPanel, BoxLayout.Y_AXIS);
 	boxPanel.setLayout(boxLayout);
 	mainPanel.add(boxPanel, BorderLayout.CENTER);
+	boxPanel.add(ctrlPan);
 	boxPanel.add(bodTable);
 	boxPanel.add(v);
 	boxPanel.setBackground(Color.LIGHT_GRAY);
 	
 	this.setResizable(false);
 	this.setSize(650, 750);
-	this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+//	this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 	this.setVisible(true);
+	this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	
 }
 
