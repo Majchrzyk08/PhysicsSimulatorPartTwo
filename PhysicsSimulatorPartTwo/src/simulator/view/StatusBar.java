@@ -13,9 +13,11 @@ import simulator.model.SimulatorObserver;
 
 public class StatusBar extends JPanel implements SimulatorObserver {
 	
-	private JLabel _currTime; // for current time
-	private JLabel _currLaws; // for force laws
-	private JLabel _numOfBodies; // for number of bodies
+	private JLabel _currTime = new JLabel(); // for current time
+	private JLabel _currLaws = new JLabel();// for force laws
+	private JLabel _numOfBodies = new JLabel(); // for number of bodies
+
+
 	
 	JPanel timePanel = new JPanel();
 	JPanel numOfBodiesPanel = new JPanel();
@@ -30,6 +32,10 @@ public class StatusBar extends JPanel implements SimulatorObserver {
 	this.setLayout( new FlowLayout( FlowLayout.LEFT ));
 	this.setBorder( BorderFactory.createBevelBorder( 1 ));
 	
+	_currTime.setText("Time: ");
+	_currLaws.setText("Force Laws: ");
+	_numOfBodies.setText("Number of bodies: ");
+	
 	update();
 	
 	}
@@ -39,7 +45,7 @@ public class StatusBar extends JPanel implements SimulatorObserver {
 		timePanel.add(_currTime);
 		this.add(timePanel);
 		
-		numOfBodiesPanel.add(numOfBodiesPanel);
+		numOfBodiesPanel.add(_numOfBodies);
 		this.add(numOfBodiesPanel);
 		
 		lawsPanel.add(_currLaws);
