@@ -37,7 +37,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 	private JButton run;
 	private JButton stop;
 	private JButton exit;
-	private JPanel panel;
 	private JSpinner stepText;
 	private JTextField time;
 	
@@ -49,8 +48,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 	}
 	
 	private void initGUI() {
-		
-	panel = new JPanel();	
+	
 	open = new JButton();
 	force = new JButton();
 	run = new JButton();
@@ -69,15 +67,16 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 	stop.setIcon(new ImageIcon("resources/icons/stop.png"));
 	exit.setIcon(new ImageIcon("resources/icons/exit.png"));
 	
-	panel.add(open);
-	panel.add(force);
-	panel.add(run);
-	panel.add(stop);
-	panel.add(step);
-	panel.add(stepText);
-	panel.add(deltaT);
-	panel.add(time);
-	panel.add(exit);
+	this.add(open);
+	this.add(force);
+	this.add(run);
+	this.add(stop);
+	this.add(step);
+	this.add(stepText);
+	this.add(deltaT);
+	this.add(time);
+	this.add(exit);
+
 	
 	open.addActionListener(new ActionListener(){
 		@Override
