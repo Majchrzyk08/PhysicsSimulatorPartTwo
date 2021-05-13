@@ -66,7 +66,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 	run.setIcon(new ImageIcon("resources/icons/run.png"));
 	stop.setIcon(new ImageIcon("resources/icons/stop.png"));
 	exit.setIcon(new ImageIcon("resources/icons/exit.png"));
-	
+
 	this.add(open);
 	this.add(force);
 	this.add(run);
@@ -77,7 +77,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 	this.add(time);
 	this.add(exit);
 
-	
 	open.addActionListener(new ActionListener(){
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -125,6 +124,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 			_stopped = false;
 			
 			run_sim((Integer)stepText.getValue());
+
 
 		}
 	});

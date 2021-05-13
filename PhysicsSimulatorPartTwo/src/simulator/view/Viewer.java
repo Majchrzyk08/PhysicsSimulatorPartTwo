@@ -31,7 +31,7 @@ public class Viewer extends JComponent implements SimulatorObserver {
 	private List<Body> _bodies;
 	private boolean _showHelp;
 	private boolean _showVectors;
-	 public static final Color red = new Color(255, 0, 0);
+
 
 	
 
@@ -99,35 +99,37 @@ public class Viewer extends JComponent implements SimulatorObserver {
 	});
 	
 	addMouseListener(new MouseListener() {
-	// ...
-	public void mouseEntered(MouseEvent e) {
-	requestFocus();
-	}
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+		@Override
+		public void mouseEntered(MouseEvent e) {
+		requestFocus();
+		}
 
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
 
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
 
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	});
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		});
+
 	
 	}
 	@Override
@@ -147,9 +149,11 @@ public class Viewer extends JComponent implements SimulatorObserver {
 	int y;
 	int x1;
 	int y1;
+	int x2;
+	int y2;
 	_centerX = getWidth() / 2;
 	_centerY = getHeight() / 2;
-	gr.setColor(red);
+	gr.setColor(Color.RED);
 	gr.drawLine(_centerX , _centerY + 7, _centerX, _centerY - 7);
 	gr.drawLine(_centerX + 7 , _centerY, _centerX - 7, _centerY);
 	
@@ -164,12 +168,17 @@ public class Viewer extends JComponent implements SimulatorObserver {
 		y = _centerY - (int) (body.getPosition().getY()/_scale);
 		gr.setColor(Color.BLUE);
 		gr.fillOval(x, y, 10, 10 );
+		gr.setColor(Color.BLACK);
+		gr.drawString(body.getId(), x, y-4);
 		x += 5;
 		y += 5;
 		x1 = (int) body.getVelocity().direction().scale(15).getX() + x;
-		y1 = (int) body.getVelocity().direction().scale(15).getY() + y;
+		y1 = (int) body.getVelocity().direction().scale(15).getY()*-1 + y;
+		x2 = ((int) body.getForce().direction().scale(15).getX() + x);
+		y2 = ((int) body.getForce().direction().scale(15).getY()*-1 + y);
 		if(_showVectors) {
-			drawLineWithArrow(gr, x, y, x1, y1, 2, 2, red, red);
+			drawLineWithArrow(gr, x, y, x1, y1, 3, 3, Color.GREEN, Color.GREEN);
+			drawLineWithArrow(gr, x, y, x2, y2, 3, 3, Color.RED,Color.RED);
 		}
 		
 	}
@@ -177,8 +186,6 @@ public class Viewer extends JComponent implements SimulatorObserver {
 	
 	
 	
-	
-	// TODO draw bodies (with vectors if _showVectors is true)
 	
 	}
 	// other private/protected methods
