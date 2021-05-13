@@ -1,5 +1,6 @@
 package simulator.view;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -11,8 +12,11 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 import simulator.control.Controller;
 import simulator.misc.Vector2D;
@@ -21,24 +25,35 @@ import simulator.model.SimulatorObserver;
 
 public class Viewer extends JComponent implements SimulatorObserver {
 
-	// ...
 	private int _centerX;
 	private int _centerY;
 	private double _scale;
 	private List<Body> _bodies;
 	private boolean _showHelp;
 	private boolean _showVectors;
+	 public static final Color red = new Color(255, 0, 0);
+
+	
+
+	
 	Viewer(Controller ctrl) {
 	initGUI();
 	ctrl.addObserver(this);
+	setLayout(new BorderLayout());
+	setBorder(BorderFactory.createTitledBorder(
+	BorderFactory.createLineBorder(Color.black, 2),
+	"Viewer",
+	TitledBorder.LEFT, TitledBorder.TOP));
 	}
 
 	private void initGUI() {
-	// TODO add border with title
+	
+	
 	_bodies = new ArrayList<>();
 	_scale = 1.0;
 	_showHelp = true;
 	_showVectors = true;
+	
 	addKeyListener(new KeyListener() {
 	// ...
 	@Override
@@ -113,9 +128,13 @@ public class Viewer extends JComponent implements SimulatorObserver {
 		
 	}
 	});
+	
 	}
 	@Override
 	protected void paintComponent(Graphics g) {
+		
+		
+		
 	super.paintComponent(g);
 	// use ’gr’ to draw not ’g’ --- it gives nicer results
 	Graphics2D gr = (Graphics2D) g;
@@ -126,15 +145,35 @@ public class Viewer extends JComponent implements SimulatorObserver {
 	// calculate the center
 	_centerX = getWidth() / 2;
 	_centerY = getHeight() / 2;
-//	// TODO draw a cross at center classmates ave told me that
-//	you need to make 2 JPanel, change the color of the background
-//	and set the size to a rectangle, one vertical and two horizontal
+	gr.setColor(red);
+	gr.drawLine(_centerX , _centerY + 7, _centerX, _centerY - 7);
+	gr.drawLine(_centerX + 7 , _centerY, _centerX - 7, _centerY);
+//	int x =
+	if(_showHelp) {
+		gr.drawString("h: toggle help, v: toggle vectors, +: zoom-in, -: zoom-out, =: fit", 10, 24);
+		gr.drawString("Scaling ratio: " + Double.toString(_scale), 10, 38);
+	}
+	
+	gr.setColor(Color.BLUE);
+	for(Body body : _bodies) {
+		gr.fillOval( _centerX + (int) (body.getPosition().getX()/_scale), _centerY - (int) (body.getPosition().getY()/_scale), 10, 10 );
+		
+		if(_showVectors) {
+			drawLineWithArrow(gr, (int)body.getPosition().getX(),(int)body.getPosition().getY(), (int)body.getForce().getX(), (int)body.getForce().getY(), 1, 1, red, red);
+		}
+		
+	}
+	
+	
+	
+	
+	
 	// TODO draw bodies (with vectors if _showVectors is true)
-	// TODO draw help if _showHelp is true
+	
 	}
 	// other private/protected methods
 	// ...
-	private void autoScale() {
+	public void autoScale() {
 	double max = 1.0;
 	for (Body b : _bodies) {
 	Vector2D p = b.getPosition();

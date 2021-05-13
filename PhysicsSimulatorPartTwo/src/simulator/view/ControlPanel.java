@@ -142,8 +142,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 		public void actionPerformed(ActionEvent e) {
 			int input = JOptionPane.showConfirmDialog(null, "Do you want to exit?", "Select and option...", JOptionPane.YES_NO_OPTION);
 			
-			System.out.println(input);
-			
 			if(input == 0) {
 				System.exit(0);
 			}

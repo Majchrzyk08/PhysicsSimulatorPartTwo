@@ -95,6 +95,7 @@ public class MainWindow extends JFrame {
 		JPanel eventsPanel = new JPanel(new BorderLayout());
 		mainPanel.add(eventsPanel,BorderLayout.CENTER);
 				
+	
 		// add border
 		eventsPanel.setBorder(BorderFactory.createTitledBorder(_defaultBorder, "Events", TitledBorder.LEFT,
 				TitledBorder.TOP));
