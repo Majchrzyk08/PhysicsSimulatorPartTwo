@@ -143,12 +143,16 @@ public class Viewer extends JComponent implements SimulatorObserver {
 	gr.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 	RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 	// calculate the center
+	int x;
+	int y;
+	int x1;
+	int y1;
 	_centerX = getWidth() / 2;
 	_centerY = getHeight() / 2;
 	gr.setColor(red);
 	gr.drawLine(_centerX , _centerY + 7, _centerX, _centerY - 7);
 	gr.drawLine(_centerX + 7 , _centerY, _centerX - 7, _centerY);
-//	int x =
+	
 	if(_showHelp) {
 		gr.drawString("h: toggle help, v: toggle vectors, +: zoom-in, -: zoom-out, =: fit", 10, 24);
 		gr.drawString("Scaling ratio: " + Double.toString(_scale), 10, 38);
@@ -156,10 +160,16 @@ public class Viewer extends JComponent implements SimulatorObserver {
 	
 	gr.setColor(Color.BLUE);
 	for(Body body : _bodies) {
-		gr.fillOval( _centerX + (int) (body.getPosition().getX()/_scale), _centerY - (int) (body.getPosition().getY()/_scale), 10, 10 );
-		
+		x = _centerX + (int) (body.getPosition().getX()/_scale);
+		y = _centerY - (int) (body.getPosition().getY()/_scale);
+		gr.setColor(Color.BLUE);
+		gr.fillOval(x, y, 10, 10 );
+		x += 5;
+		y += 5;
+		x1 = (int) body.getVelocity().direction().scale(15).getX() + x;
+		y1 = (int) body.getVelocity().direction().scale(15).getY() + y;
 		if(_showVectors) {
-			drawLineWithArrow(gr, (int)body.getPosition().getX(),(int)body.getPosition().getY(), (int)body.getForce().getX(), (int)body.getForce().getY(), 1, 1, red, red);
+			drawLineWithArrow(gr, x, y, x1, y1, 2, 2, red, red);
 		}
 		
 	}
