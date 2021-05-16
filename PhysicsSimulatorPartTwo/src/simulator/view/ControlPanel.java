@@ -30,14 +30,14 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 	private Controller _ctrl;
 	private boolean _stopped;
 	
-	private JLabel step;
-	private JLabel deltaT;
+	private JLabel stepText;
+	private JLabel timeText;
 	private JButton open;
 	private JButton force;
 	private JButton run;
 	private JButton stop;
 	private JButton exit;
-	private JSpinner stepText;
+	private JSpinner steps;
 	private JTextField time;
 	
 	ControlPanel(Controller ctrl) {
@@ -54,12 +54,13 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 	run = new JButton();
 	stop = new JButton();
 	exit = new JButton();
-	stepText = new JSpinner();
+	steps = new JSpinner();
 	time = new JTextField("2500");
-	step = new JLabel("Steps: ");
-	deltaT = new JLabel("Delta-time: ");
+	stepText = new JLabel("Steps: ");
+	timeText = new JLabel("Delta-time: ");
 	                        
-	stepText.setValue(5000);
+	steps.setValue(10000);
+	_ctrl.setDeltaTime(Double.parseDouble(time.getText()));
 	
 	open.setIcon(new ImageIcon("resources/icons/open.png"));
 	force.setIcon(new ImageIcon("resources/icons/physics.png"));
@@ -71,9 +72,9 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 	this.add(force);
 	this.add(run);
 	this.add(stop);
-	this.add(step);
 	this.add(stepText);
-	this.add(deltaT);
+	this.add(steps);
+	this.add(timeText);
 	this.add(time);
 	this.add(exit);
 
@@ -106,10 +107,9 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 	});
 	
 	force.addActionListener(new ActionListener(){
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
+			
 			
 		}
 	});
@@ -123,8 +123,9 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 			
 			_stopped = false;
 			
-			run_sim((Integer)stepText.getValue());
-
+			 
+			run_sim((Integer)steps.getValue());
+			
 
 		}
 	});
