@@ -19,6 +19,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+
 import simulator.control.Controller;
 import simulator.model.Body;
 import simulator.model.SimulatorObserver;
@@ -26,7 +27,8 @@ import simulator.model.SimulatorObserver;
 
 public class ControlPanel extends JPanel implements SimulatorObserver, ActionListener {
 
-	// ...
+
+	ForcelawsDialog _dialog;
 	private Controller _ctrl;
 	private boolean _stopped;
 	
@@ -109,8 +111,11 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 	force.addActionListener(new ActionListener(){
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			if (_dialog == null) {
+
+			_dialog = new ForcelawsDialog();
 			
-			
+		}
 		}
 	});
 	
