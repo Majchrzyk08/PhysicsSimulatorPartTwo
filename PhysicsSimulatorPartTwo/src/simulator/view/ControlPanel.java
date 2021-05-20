@@ -122,7 +122,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 			if (a == 1) {
 				_ctrl.setForcesLaws(_dialog.getJSON());
 			}
-
+			System.out.println("owo");
 		}
 	});
 	

@@ -31,7 +31,9 @@ class ForcelawsDialog extends JDialog {
 	private JsonTableModel _dataTableModel;
 	private Controller _ctrl ;
 	private JComboBox<String> selector;
-	String type;
+	private JSONObject selected;
+	private String type;
+	private int chosen;
 
 
 	// This table model stores internally the content of the table. Use
@@ -53,15 +55,18 @@ class ForcelawsDialog extends JDialog {
 		public void update(int index) {
 			JSONObject info = _ctrl.getForceLawsInfo().get(index);
 			JSONObject data = info.getJSONObject("data");
-			type = info.getString("type");
+			
+			
 			Set<String> keys = data.keySet();
 			_data = new String[keys.size()][3];
+			
 			for(int i=0; i<keys.size(); i++) {
 				for(int j=0; j<3; j++) {
 					_data[i][j] = "";
 					
 				}
 			}
+			
 			int i = 0;
 			for(String key : keys) {
 				_data[i][0] = key;
@@ -74,13 +79,7 @@ class ForcelawsDialog extends JDialog {
 			fireTableStructureChanged();
 			
 		}
-		
-		public void clear() {
-			for (int i = 0; i < 5; i++)
-				for (int j = 0; j < 2; j++)
-					_data[i][j] = "";
-			fireTableStructureChanged();
-		}
+
 
 		@Override
 		public String getColumnName(int column) {
@@ -203,7 +202,7 @@ class ForcelawsDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				int chosen = selector.getSelectedIndex();
+				 chosen = selector.getSelectedIndex();
 				_dataTableModel.update(chosen);
 			}
 		});
@@ -236,11 +235,12 @@ class ForcelawsDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				_status = 1;
 				ForcelawsDialog.this.setVisible(false);
-				
+				selected = _ctrl.getForceLawsInfo().get(chosen);
 				 JSONObject o = new JSONObject();
+				 o.put("type", selected.getString("type"));
 				 o.put("data", new JSONObject(_dataTableModel.getData()));
-				 o.put("type", type);
-				 o.put("type", );
+
+
 				_ctrl.setForcesLaws(o);
 				 
 						
@@ -268,7 +268,11 @@ class ForcelawsDialog extends JDialog {
 	}
 
 	public JSONObject getJSON() {
-		return new JSONObject(_dataTableModel.getData());
+		JSONObject newLaw = new JSONObject();
+
+		newLaw.put("type", selected.getString("type"));
+		newLaw.put("data", new JSONObject(_dataTableModel.getData()));
+		return newLaw;
 	}
 
 }
