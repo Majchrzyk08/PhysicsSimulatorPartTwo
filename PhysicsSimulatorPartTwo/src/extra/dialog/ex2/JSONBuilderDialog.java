@@ -25,11 +25,13 @@ class JSONBuilderDialog extends JDialog {
 	// This table model stores internally the content of the table. Use
 	// getData() to get the content as JSON.
 	//
+	
 	private class JsonTableModel extends AbstractTableModel {
 
 		/**
 		 * 
 		 */
+		
 		private static final long serialVersionUID = 1L;
 
 		private String[] _header = { "Key", "Value" };
@@ -86,6 +88,7 @@ class JSONBuilderDialog extends JDialog {
 		// string value they should add the quotes as well as part of the
 		// value (2nd column).
 		//
+		
 		public String getData() {
 			StringBuilder s = new StringBuilder();
 			s.append('{');

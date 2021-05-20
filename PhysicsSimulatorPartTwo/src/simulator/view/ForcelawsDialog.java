@@ -6,14 +6,22 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+
+import org.json.JSONObject;
+
+
+import simulator.control.Controller;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Set;
 
 class ForcelawsDialog extends JDialog {
 
@@ -21,6 +29,10 @@ class ForcelawsDialog extends JDialog {
 
 	private int _status;
 	private JsonTableModel _dataTableModel;
+	private Controller _ctrl ;
+	private JComboBox<String> selector;
+	String type;
+
 
 	// This table model stores internally the content of the table. Use
 	// getData() to get the content as JSON.
@@ -32,14 +44,37 @@ class ForcelawsDialog extends JDialog {
 		 */
 		private static final long serialVersionUID = 1L;
 
-		private String[] _header = { "Key", "Value" };
+		private String[] _header = { "Key", "Value", "Description" };
 		String[][] _data;
-
+		
 		JsonTableModel() {
-			_data = new String[5][2];
-			clear();
+			update(0);
 		}
-
+		public void update(int index) {
+			JSONObject info = _ctrl.getForceLawsInfo().get(index);
+			JSONObject data = info.getJSONObject("data");
+			type = info.getString("type");
+			Set<String> keys = data.keySet();
+			_data = new String[keys.size()][3];
+			for(int i=0; i<keys.size(); i++) {
+				for(int j=0; j<3; j++) {
+					_data[i][j] = "";
+					
+				}
+			}
+			int i = 0;
+			for(String key : keys) {
+				_data[i][0] = key;
+				_data[i][2] = data.getString(key);
+				i++;
+			}
+			
+			
+			
+			fireTableStructureChanged();
+			
+		}
+		
 		public void clear() {
 			for (int i = 0; i < 5; i++)
 				for (int j = 0; j < 2; j++)
@@ -108,8 +143,10 @@ class ForcelawsDialog extends JDialog {
 		}
 	}
 
-	ForcelawsDialog() {
-		//super(true);
+	ForcelawsDialog(Frame parent, Controller ctrl) {
+
+		super(parent, true);
+		_ctrl = ctrl;
 		initGUI();
 	}
 
@@ -151,10 +188,29 @@ class ForcelawsDialog extends JDialog {
 		JScrollPane tabelScroll = new JScrollPane(dataTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		mainPanel.add(tabelScroll);
-
+		
 		mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+		
+		String[] names = new  String[_ctrl.getForceLawsInfo().size()];
+		for(int i = 0; i < names.length; i++) {
+			names[i]=_ctrl.getForceLawsInfo().get(i).getString("desc");
+		}
+		
+		selector = new JComboBox<String>(names);
+		selector.setSelectedIndex(0);
+		selector.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				int chosen = selector.getSelectedIndex();
+				_dataTableModel.update(chosen);
+			}
+		});
 
-		// bottons
+		selector.setAlignmentX(CENTER_ALIGNMENT);
+		mainPanel.add(selector);
+		// buttons
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setAlignmentX(CENTER_ALIGNMENT);
 
@@ -171,15 +227,7 @@ class ForcelawsDialog extends JDialog {
 		});
 		buttonsPanel.add(cancelButton);
 
-		JButton clearButton = new JButton("Clear");
-		clearButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				_dataTableModel.clear();
-			}
-		});
-		buttonsPanel.add(clearButton);
+	
 
 		JButton okButton = new JButton("OK");
 		okButton.addActionListener(new ActionListener() {
@@ -188,12 +236,21 @@ class ForcelawsDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				_status = 1;
 				ForcelawsDialog.this.setVisible(false);
+				
+				 JSONObject o = new JSONObject();
+				 o.put("data", new JSONObject(_dataTableModel.getData()));
+				 o.put("type", type);
+				 o.put("type", );
+				_ctrl.setForcesLaws(o);
+				 
+						
+						
+				
 			}
 		});
 		buttonsPanel.add(okButton);
 
 		setPreferredSize(new Dimension(400, 400));
-
 		pack();
 		setResizable(false); // change to 'true' if you want to allow resizing
 		setVisible(false); // we will show it only whe open is called
@@ -202,16 +259,16 @@ class ForcelawsDialog extends JDialog {
 	public int open() {
 
 		if (getParent() != null)
-			setLocation(//
-					getParent().getLocation().x + getParent().getWidth() / 2 - getWidth() / 2, //
+			setLocation(
+					getParent().getLocation().x + getParent().getWidth() / 2 - getWidth() / 2, 
 					getParent().getLocation().y + getParent().getHeight() / 2 - getHeight() / 2);
 		pack();
 		setVisible(true);
 		return _status;
 	}
 
-	public String getJSON() {
-		return _dataTableModel.getData();
+	public JSONObject getJSON() {
+		return new JSONObject(_dataTableModel.getData());
 	}
 
 }

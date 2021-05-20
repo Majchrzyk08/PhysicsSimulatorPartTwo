@@ -1,6 +1,7 @@
 package simulator.view;
 
 import java.awt.Dialog;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -41,7 +43,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 	private JButton exit;
 	private JSpinner steps;
 	private JTextField time;
-	
+
 	ControlPanel(Controller ctrl) {
 	_ctrl = ctrl;
 	_stopped = true;
@@ -63,6 +65,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 	                        
 	steps.setValue(10000);
 	_ctrl.setDeltaTime(Double.parseDouble(time.getText()));
+	
 	
 	open.setIcon(new ImageIcon("resources/icons/open.png"));
 	force.setIcon(new ImageIcon("resources/icons/physics.png"));
@@ -111,11 +114,15 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 	force.addActionListener(new ActionListener(){
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (_dialog == null) {
-
-			_dialog = new ForcelawsDialog();
+			if(_dialog == null) {
+			_dialog = new ForcelawsDialog((Frame) SwingUtilities.getWindowAncestor(ControlPanel.this), _ctrl);
+			}
 			
-		}
+			int a = _dialog.open();
+			if (a == 1) {
+				_ctrl.setForcesLaws(_dialog.getJSON());
+			}
+
 		}
 	});
 	
@@ -128,8 +135,9 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 			
 			_stopped = false;
 			
-			 
+			_ctrl.setDeltaTime(Double.parseDouble(time.getText()));
 			run_sim((Integer)steps.getValue());
+			
 			
 
 		}
