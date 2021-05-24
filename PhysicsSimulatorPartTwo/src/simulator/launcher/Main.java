@@ -203,7 +203,7 @@ public class Main {
 
 	private static void parseInFileOption(CommandLine line) throws ParseException {
 		_inFile = line.getOptionValue("i");
-		if (_inFile == null) {
+		if (_inFile == null && _mode.equals("batch")) {
 			throw new ParseException("In batch mode an input file of bodies is required");
 		}
 	}
@@ -334,6 +334,7 @@ public class Main {
 		InputStream is;
 
 		Controller cont = new Controller(ps, _bodyFactory, _forceLawsFactory);
+		
 		if(_inFile != null) {
 			is = new FileInputStream(new File(_inFile));
 			cont.loadBodies(is);

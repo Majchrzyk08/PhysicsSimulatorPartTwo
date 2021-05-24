@@ -173,7 +173,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 		} catch (Exception e) {
 		// TODO show the error in a dialog box
 			
-		JOptionPane.showMessageDialog(null, e.getMessage(), "error", Dialog.ERROR);
+		JOptionPane.showMessageDialog(null, e.getMessage(), "error", JOptionPane.ERROR_MESSAGE);
 		
 		// TODO enable all buttons
 		open.setEnabled(true);

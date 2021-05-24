@@ -18,6 +18,8 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -240,9 +242,11 @@ class ForcelawsDialog extends JDialog {
 				 o.put("type", selected.getString("type"));
 				 o.put("data", new JSONObject(_dataTableModel.getData()));
 
-
+				 try {
 				_ctrl.setForcesLaws(o);
-				 
+				 }catch(Exception ex) {
+					 JOptionPane.showMessageDialog(null, ex.getMessage(), "error", JOptionPane.ERROR_MESSAGE);
+				 }
 						
 						
 				
