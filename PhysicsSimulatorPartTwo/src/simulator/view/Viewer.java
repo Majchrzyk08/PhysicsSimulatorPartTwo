@@ -173,9 +173,9 @@ public class Viewer extends JComponent implements SimulatorObserver {
 		x += 5;
 		y += 5;
 		x1 = (int) body.getVelocity().direction().scale(15).getX() + x;
-		y1 = (int) body.getVelocity().direction().scale(15).getY()*-1 + y;
+		y1 = y - (int) body.getVelocity().direction().scale(15).getY();
 		x2 = ((int) body.getForce().direction().scale(15).getX() + x);
-		y2 = ((int) body.getForce().direction().scale(15).getY()*-1 + y);
+		y2 = y - (int) body.getForce().direction().scale(15).getY();
 		if(_showVectors) {
 			drawLineWithArrow(gr, x, y, x1, y1, 3, 3, Color.GREEN, Color.GREEN);
 			drawLineWithArrow(gr, x, y, x2, y2, 3, 3, Color.RED,Color.RED);
