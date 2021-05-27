@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
 
@@ -58,12 +59,11 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 	run = new JButton();
 	stop = new JButton();
 	exit = new JButton();
-	steps = new JSpinner();
+	steps = new JSpinner(new SpinnerNumberModel(10000, 0, 100000, 100));
 	time = new JTextField("2500");
 	stepText = new JLabel("Steps: ");
 	timeText = new JLabel("Delta-time: ");
 	                        
-	steps.setValue(10000);
 	_ctrl.setDeltaTime(Double.parseDouble(time.getText()));
 	
 	
@@ -92,7 +92,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver, ActionLis
 			
 			if(value == JFileChooser.APPROVE_OPTION) {
 				file = fc.getSelectedFile();
-				System.out.println("Loading: " + file.getName());
 				} 
 			else {
 				 file = null;

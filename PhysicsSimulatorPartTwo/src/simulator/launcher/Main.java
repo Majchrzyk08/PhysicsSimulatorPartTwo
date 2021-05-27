@@ -99,11 +99,12 @@ public class Main {
 			CommandLine line = parser.parse(cmdLineOptions, args);
 
 			parseHelpOption(line, cmdLineOptions);
+			parseModeOption(line);
 			parseInFileOption(line);
 			parseOutFileOption(line);
 			parseExpectedOutputOption(line);
 			parseStepsOption(line);
-			parseModeOption(line);
+			
 			// add support of -o, -eo, and -s (define corresponding parse methods)
 			parseDeltaTimeOption(line);
 			parseForceLawsOption(line);
